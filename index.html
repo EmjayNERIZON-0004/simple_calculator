@@ -112,16 +112,32 @@
     function calculate() {
         if (first_value === null || current === "") return;
         let second_value = parseFloat(current);
-
-        if (operator === "+") {
+        
+        switch(operator) {
+            case '+':
             result = first_value + second_value;
-        } else if (operator === "-") {
-            result = first_value - second_value;
-        } else if (operator === "×") {
-            result = first_value * second_value;
-        } else if (operator === "÷") {
-            result = second_value !== 0 ? first_value / second_value : "Error";
+                break;
+            case '-':
+                result = first_value - second_value;
+                break;
+            case '×':
+                result = first_value * second_value;
+                break;
+            case '÷':
+                result = second_value !== 0 ? first_value / second_value : "Error";
+                break;
+            default:
+                return; // Invalid operator
         }
+        // if (operator === "+") {
+        //     result = first_value + second_value;
+        // } else if (operator === "-") {
+        //     result = first_value - second_value;
+        // } else if (operator === "×") {
+        //     result = first_value * second_value;
+        // } else if (operator === "÷") {
+        //     result = second_value !== 0 ? first_value / second_value : "Error";
+        // }
 
         display_result.value = result;
         console.log("After calculation current:", current);
