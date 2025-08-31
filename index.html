@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+
+<body style="background-color:#868686">
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background-color: white;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #868686;
+            border-radius: 10px;
+        }
+
+        .grid-container button {
+            padding: 20px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        .grid-container button:hover {
+            background-color: #d0d0d0;
+        }
+    </style>
+    <div class="grid-container " style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);margin-top: 50px; ">
+
+        <div
+            style="grid-column: span 4;width: 100%; height: 50px; font-size: 1.5em;font-family:Verdana, Geneva, Tahoma, sans-serif ; text-align: left; margin-bottom: 10px;">
+            RealtimeCalculator.com
+
+            <br>
+            <span style="font-size: medium">Presented by emjay.dev</span>
+        </div>
+
+        <input type="text" id="display" disabled style="width: 100%; height: 50px; font-size: 1.5em; text-align: right; margin-bottom: 5px;
+        grid-column: span 4; ">
+        <input type="text" id="display_result" disabled
+            style="grid-column: span 4;width: 100%; height: 50px; font-size: 1.5em; text-align: right; margin-bottom: 10px;">
+
+        <button id="7" onclick="appendNumber('7')">7</button>
+        <button id="8" onclick="appendNumber('8')">8</button>
+        <button id="9" onclick="appendNumber('9')">9</button>
+        <button id="C" onclick="clearDisplay()" style="background-color: #f4a536; color: white;">C</button>
+        <button id="4" onclick="appendNumber('4')">4</button>
+        <button id="5" onclick="appendNumber('5')">5</button>
+        <button id="6" onclick="appendNumber('6')">6</button>
+        <button id="divide" onclick="setOperator('÷')"
+            style="background-color: #11962e; color: white;">&divide;</button>
+
+        <button id="1" onclick="appendNumber('1')">1</button>
+        <button id="2" onclick="appendNumber('2')">2</button>
+        <button id="3" onclick="appendNumber('3')">3</button>
+        <button id="times" onclick="setOperator('×')" style="background-color: #11962e; color: white;">&times;</button>
+        <button id="decimal" onclick="appendNumber('.')" style="background-color: #ecc424; color: white;">.</button>
+        <button id="0" onclick="appendNumber('0')">0</button>
+        <button id="minus" onclick="setOperator('-')" style="background-color: #11962e; color: white;">-</button>
+        <button id="plus" onclick="setOperator('+')" style="background-color: #11962e; color: white;">+</button>
+        <button id="equal" onclick="display_total()"
+            style="grid-column:span 4;width:100%;color:white; background-color: #1c62c3;">=</button>
+
+    </div>
+</body>
+
+<script>
+    let current = "";
+    let main_display = "";
+    let first_value = null;
+    let operator = "";
+    let result = null;
+
+    const display = document.getElementById("display");
+    const display_result = document.getElementById("display_result");
+
+    function appendNumber(num) {
+        current += num;
+        main_display += num;
+        display.value = main_display;
+
+        if (operator && first_value !== null && current !== "") {
+            calculate();
+        }
+    }
+
+    function setOperator(op) {
+        if (current === "" && result === null) return; // prevent operator without number
+
+        if (first_value === null) {
+            first_value = parseFloat(current);
+        } else if (current !== "") {
+            calculate();
+            first_value = result;
+        }
+
+        operator = op;
+        current = "";
+        main_display += op;
+        display.value = main_display;
+    }
+
+    function calculate() {
+        if (first_value === null || current === "") return;
+        let second_value = parseFloat(current);
+
+        if (operator === "+") {
+            result = first_value + second_value;
+        } else if (operator === "-") {
+            result = first_value - second_value;
+        } else if (operator === "×") {
+            result = first_value * second_value;
+        } else if (operator === "÷") {
+            result = second_value !== 0 ? first_value / second_value : "Error";
+        }
+
+        display_result.value = result;
+        console.log("After calculation current:", current);
+        console.log("Result:", result);
+    }
+
+    function display_total() {
+        if (result !== null) {
+            display.value = result;
+            main_display = result.toString();
+            first_value = null;
+            current = result.toString();
+            operator = "";
+            display_result.value = "";
+
+            console.log("After equals current:", current);
+            console.log("After equals result:", result);
+        }
+    }
+    function clearDisplay() {
+        current = "";
+        main_display = "";
+        first_value = null;
+        operator = "";
+        result = null;
+        display.value = "";
+        display_result.value = "";
+    }
+</script>
+
+</html>
